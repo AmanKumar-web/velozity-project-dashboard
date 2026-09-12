@@ -1,0 +1,22 @@
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+const express_1 = require("express");
+const authRoutes_js_1 = __importDefault(require("./authRoutes.js"));
+const projectRoutes_js_1 = __importDefault(require("./projectRoutes.js"));
+const taskRoutes_js_1 = __importDefault(require("./taskRoutes.js"));
+const activityRoutes_js_1 = __importDefault(require("./activityRoutes.js"));
+const notificationRoutes_js_1 = __importDefault(require("./notificationRoutes.js"));
+const dashboardRoutes_js_1 = __importDefault(require("./dashboardRoutes.js"));
+const userRoutes_js_1 = __importDefault(require("./userRoutes.js"));
+const apiRouter = (0, express_1.Router)();
+apiRouter.use('/auth', authRoutes_js_1.default);
+apiRouter.use('/projects', projectRoutes_js_1.default);
+apiRouter.use('/tasks', taskRoutes_js_1.default);
+apiRouter.use('/activity', activityRoutes_js_1.default);
+apiRouter.use('/notifications', notificationRoutes_js_1.default);
+apiRouter.use('/dashboard', dashboardRoutes_js_1.default);
+apiRouter.use('/users', userRoutes_js_1.default);
+exports.default = apiRouter;
