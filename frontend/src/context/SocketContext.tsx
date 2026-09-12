@@ -88,10 +88,38 @@ export const SocketProvider: React.FC<{ children: React.ReactNode }> = ({ childr
       queryClient.invalidateQueries({ queryKey: ['notifications'] });
     });
 
+    // Mock event listeners for live client previews (Vercel)
+    const handleMockTask = (e: any) => {
+      setLatestTaskUpdate(e.detail);
+      queryClient.invalidateQueries({ queryKey: ['tasks'] });
+      queryClient.invalidateQueries({ queryKey: ['dashboard_stats'] });
+    };
+
+    const handleMockActivity = (e: any) => {
+      setLatestActivity(e.detail);
+      queryClient.invalidateQueries({ queryKey: ['activity_feed'] });
+      queryClient.invalidateQueries({ queryKey: ['dashboard_stats'] });
+    };
+
+    const handleMockNotif = (e: any) => {
+      queryClient.invalidateQueries({ queryKey: ['notifications'] });
+    };
+
+    window.addEventListener('mock:task_updated', handleMockTask);
+    window.addEventListener('mock:activity_new', handleMockActivity);
+    window.addEventListener('mock:notification_new', handleMockNotif);
+
+    // Default presence for preview
+    setIsConnected(true);
+    setOnlineCount(4);
+
     setSocket(socketInstance);
 
     return () => {
       socketInstance.disconnect();
+      window.removeEventListener('mock:task_updated', handleMockTask);
+      window.removeEventListener('mock:activity_new', handleMockActivity);
+      window.removeEventListener('mock:notification_new', handleMockNotif);
     };
   }, [token, user?.id, queryClient]);
 
